@@ -1,20 +1,18 @@
 import loaderTmpl from '../templates/loader.tmpl';
 
 class RedsiftLoader {
-  constructor(el, opts){
+  constructor(el, opts) {
     this.transitionEvent = this._whichTransitionEvent();
     this.animating = false;
-    // hardcoding this for now
-    this.svgId = '#loading-indicator';
 
     this._setupElement(el, loaderTmpl, opts);
   }
 
   start() {
     this.animating = true;
-    this._animate(document.querySelector(this.svgId));
+    this._animate(this.svgEl);
   }
-  
+
   stop() {
     this.animating = false;
   }
@@ -22,15 +20,18 @@ class RedsiftLoader {
   //----------------------------------------------------------
   // Private API:
   //----------------------------------------------------------
-  
+
   _setupElement(el, loaderTmpl, opts) {
     el.innerHTML = loaderTmpl;
 
-    if(opts.hasAnimate){
+    // hardcoding this for now
+    this.segments = document.querySelector('#loading-indicator').getElementsByTagName('path');
+
+    if (opts.hasAnimate) {
       this.animating = true;
     }
 
-    this._animate(document.querySelector(this.svgId), null, this.transitionEvent);
+    this._animate(null);
   }
 
   _whichTransitionEvent() {
@@ -50,21 +51,22 @@ class RedsiftLoader {
     }
   }
 
-  _animate(parent, cls) {
-    if (!transitionEvent || !this.animating) return;
+  _animate(cls) {
+    if (!this.transitionEvent || !this.animating) return;
     cls = cls || 'fade-';
     let ids = ['loading-t-l', 'loading-t-r', 'loading-b-r', 'loading-b-l'];
-    let $segments = parent.getElementsByTagName('path');
-    [].slice.call($segments).forEach(function(e, i){
+
+    [].slice.call(this.segments).forEach((e, i) => {
       e.setAttribute('class', [cls + i, ids[i]].join(' '));
-      if (i !== $segments.length - 1) return;
-      (function(element, cls) {
-        element.addEventListener(this.transitionEvent, function() {
-          element.removeEventListener(this.transitionEvent, _animate);
-          _animate(parent, cls === 'build-' ? 'fade-' : 'build-');
-        });
-      })(e, cls);
-    })
+      if (i !== this.segments.length - 1) return;
+
+      let animationWrapper = function() {
+        e.removeEventListener(this.transitionEvent, animationWrapper);
+        this._animate(cls === 'build-' ? 'fade-' : 'build-');
+      }.bind(this);
+
+      e.addEventListener(this.transitionEvent, animationWrapper);
+    });
   }
 }
 
