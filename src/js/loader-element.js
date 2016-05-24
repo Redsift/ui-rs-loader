@@ -9,13 +9,15 @@ class RedsiftLoaderWebComponent extends HTMLElement {
   //----------------------------------------------------------------------------
 
   createdCallback() {
-    this.rsLoader = new RedsiftLoader(this);
+    this.rsLoader = new RedsiftLoader(this,{
+      hasAnimate: this.hasAnimate
+    });
   }
 
   attributeChangedCallback(attributeName, oldValue, newValue) {
     if (attributeName !== 'animate') return;
 
-    if (this.hasAnimate()) {
+    if (this.hasAnimate) {
       this.rsLoader.start();
     } else {
       this.rsLoader.stop();
