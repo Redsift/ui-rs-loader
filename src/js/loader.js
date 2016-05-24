@@ -3,18 +3,18 @@ import loaderTmpl from '../templates/loader.tmpl';
 class RedsiftLoader {
   constructor(el){
     this.transitionEvent = whichTransitionEvent();
-    this.animating = false;
+    this.animating = true;
     // hardcoding this for now
     this.svgId = '#loading-indicator';
 
     this._setupElement(el, loaderTmpl);
   }
-  startAnimation() {
+
+  start() {
     this.animating = true;
-    this._animate(document.querySelector(this.svgId));
   }
   
-  stopAnimation() {
+  stop() {
     this.animating = false;
   }
 
@@ -24,6 +24,7 @@ class RedsiftLoader {
   
   _setupElement(el, loaderTmpl) {
     el.innerHTML = loaderTmpl;
+    this._animate(document.querySelector(this.svgId));
   }
 
   _whichTransitionEvent() {
