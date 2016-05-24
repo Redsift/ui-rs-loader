@@ -59,8 +59,8 @@ class RedsiftLoader {
       e.setAttribute('class', [cls + i, ids[i]].join(' '));
       if (i !== $segments.length - 1) return;
       (function(element, cls) {
-        element.addEventListener(transitionEvent, function() {
-          element.removeEventListener(transitionEvent, arguments.callee);
+        element.addEventListener(this.transitionEvent, function() {
+          element.removeEventListener(this.transitionEvent, _animate);
           _animate(parent, cls === 'build-' ? 'fade-' : 'build-');
         });
       })(e, cls);
