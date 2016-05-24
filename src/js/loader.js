@@ -1,17 +1,18 @@
 import loaderTmpl from '../templates/loader.tmpl';
 
 class RedsiftLoader {
-  constructor(el){
-    this.transitionEvent = whichTransitionEvent();
-    this.animating = true;
+  constructor(el, opts){
+    this.transitionEvent = this._whichTransitionEvent();
+    this.animating = false;
     // hardcoding this for now
     this.svgId = '#loading-indicator';
 
-    this._setupElement(el, loaderTmpl);
+    this._setupElement(el, loaderTmpl, opts);
   }
 
   start() {
     this.animating = true;
+    this._animate(document.querySelector(this.svgId));
   }
   
   stop() {
@@ -22,9 +23,14 @@ class RedsiftLoader {
   // Private API:
   //----------------------------------------------------------
   
-  _setupElement(el, loaderTmpl) {
+  _setupElement(el, loaderTmpl, opts) {
     el.innerHTML = loaderTmpl;
-    this._animate(document.querySelector(this.svgId));
+
+    if(opts.hasAnimate){
+      this.animating = true;
+    }
+
+    this._animate(document.querySelector(this.svgId), null, this.transitionEvent);
   }
 
   _whichTransitionEvent() {
