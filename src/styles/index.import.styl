@@ -1,0 +1,64 @@
+setup-loader($customSettings = {}) {
+
+  /*
+   * Default settings:
+   */
+  $defaultSettings = {
+    width: 75px;
+  }
+
+  $settings = merge($defaultSettings, $customSettings);
+
+  .loading {
+    width: $settings.width;
+    padding: 0;
+  }
+  .fade-0 {
+    -webkit-animation: fade 0.23s ease-in -0.1s;
+    -webkit-animation-fill-mode: both;
+  }
+  .build-0 {
+    -webkit-animation: build 0.23s ease-out -0.1s;
+    -webkit-animation-fill-mode: both;
+  }
+  .fade-1 {
+    -webkit-animation: fade 0.23s ease-in 0.13s;
+    -webkit-animation-fill-mode: both;
+  }
+  .build-1 {
+    -webkit-animation: build 0.23s ease-out 0.13s;
+    -webkit-animation-fill-mode: both;
+  }
+  .fade-2 {
+    -webkit-animation: fade 0.23s ease-in 0.36s;
+    -webkit-animation-fill-mode: both;
+  }
+  .build-2 {
+    -webkit-animation: build 0.23s ease-out 0.36s;
+    -webkit-animation-fill-mode: both;
+  }
+  .fade-3 {
+    -webkit-animation: fade 0.23s ease-in 0.59s;
+    -webkit-animation-fill-mode: both;
+  }
+  .build-3 {
+    -webkit-animation: build 0.23s ease-out 0.59s;
+    -webkit-animation-fill-mode: both;
+  }
+  @-webkit-keyframes fade {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @-webkit-keyframes build {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
