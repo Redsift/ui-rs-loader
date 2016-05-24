@@ -51,7 +51,7 @@ class RedsiftLoader {
   }
 
   _animate(parent, cls) {
-    if (!transitionEvent || this.animating) return;
+    if (!transitionEvent || !this.animating) return;
     cls = cls || 'fade-';
     let ids = ['loading-t-l', 'loading-t-r', 'loading-b-r', 'loading-b-l'];
     let $segments = parent.getElementsByTagName('path');
