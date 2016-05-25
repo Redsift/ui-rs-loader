@@ -10,7 +10,6 @@ class RedsiftLoader {
 
   start() {
     this.animating = true;
-    this._animate(this.svgEl);
   }
 
   stop() {
@@ -23,9 +22,7 @@ class RedsiftLoader {
 
   _setupElement(el, loaderTmpl, opts) {
     el.innerHTML = loaderTmpl;
-
-    // hardcoding this for now
-    this.segments = document.querySelector('#loading-indicator').getElementsByTagName('path');
+    this.segments = el.querySelector('svg').getElementsByTagName('path');
 
     if (opts.hasAnimate) {
       this.animating = true;
