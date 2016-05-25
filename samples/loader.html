@@ -13,33 +13,21 @@
 </head>
 
 <body>
-    <rs-loader animate>
+    <rs-loader id='loader1' animate>
+    </rs-loader>
+    <style type="text/css">
+        #loader2 > .loader-opts {
+            width: 100px;
+        }
+    </style>
+    <rs-loader id='loader2' animate>
     </rs-loader>
 
     <!-- NOTE: the './dist' folder is served by the browser-sync plugin on '/' -->
     <script src="/js/ui-rs-loader.umd-es2015.js"></script>
 
     <script>
-        // // Testing:
-        // var $hero = document.querySelector('rs-hero');
-
-        // setTimeout(function() {
-        //     $hero.removeAttribute('scroll-target');
-        // }, 500);
-
-        // setTimeout(function() {
-        //     $hero.setAttribute('scroll-target', '#scroll-anchor');
-        //     $hero.setAttribute('scroll-target', '#test');
-        //     $hero.scrollTarget = "#scroll-anchor";
-        // }, 1000);
-
-        // setTimeout(function() {
-        //     $hero.removeAttribute('sticky-header');
-        // }, 3000);
-
-        // setTimeout(function() {
-        //     $hero.setAttribute('sticky-header', '.content');
-        // }, 4000);
+      
     </script>
 </body>
 
