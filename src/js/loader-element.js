@@ -26,11 +26,7 @@ class RedsiftLoaderWebComponent extends HTMLElement {
 
   get hasAnimate() {
     let a = this.getAttribute('animate');
-    if (a == '' || a) {
-      return true;
-    }
-
-    return false;
+    return a == '' || a;
   }
 }
 
