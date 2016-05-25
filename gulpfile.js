@@ -23,9 +23,9 @@ gulp.task('js-watch', ['bundle-js'], function() {
 gulp.task('serve', ['default', 'browser-sync'], function() {
   gulp.watch(['./src/**/*.{import.styl,styl,css}', './bundle.config.js'], ['css-watch']);
   gulp.watch(['./src/**/*.{js,tmpl}', './bundles/**/*.{js,tmpl}', './bundle.config.js'], ['js-watch']);
-  // gulp.watch('./samples/**/*.html').on('change', function() {
-  //   browserSync.reload('*.html');
-  // });
+  gulp.watch('./samples/**/*.html').on('change', function() {
+    browserSync.reload('*.html');
+  });
 });
 
 gulp.task('build', ['bundle-js', 'bundle-css']);
