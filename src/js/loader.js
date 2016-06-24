@@ -3,7 +3,7 @@ import loaderTmpl from '../templates/loader.tmpl';
 class RedsiftLoader {
   constructor(el, opts) {
     this.transitionEvent = this._whichTransitionEvent();
-    this.animating = false;
+    this.animating = true;
 
     this._setupElement(el, loaderTmpl, opts);
   }
