@@ -1,46 +1,36 @@
 'use strict';
 
-var gulp = require('gulp'),
-  browserSync = require('browser-sync').create(),
-  del = require('del'),
-  bundleConfig = require('./bundle.config.js');
+var gulp = require('gulp');
+var browserSync = require('browser-sync').create();
+var del = require('del');
+var spawn = require('child_process').spawn;
 
-function getTask(task) {
-  return require('./gulp-tasks/' + task)(gulp, bundleConfig);
-}
-
-gulp.task('bundle-js', getTask('bundle-js'));
-gulp.task('bundle-css', getTask('bundle-css'));
-
-gulp.task('css-watch', ['bundle-css'], function() {
-  browserSync.reload('*.css');
+gulp.task('build', function(cb) {
+  var flags = [
+    './node_modules/@redsift/redsift-bundler/bin/bundle.js',
+    '-c',
+    './bundle.config.js'
+  ];
+  var cmd = spawn('node', flags, {stdio: 'inherit'});
+  return cmd.on('close', cb);
 });
 
-gulp.task('js-watch', ['bundle-js'], function() {
-  browserSync.reload('*.js');
-});
-
-gulp.task('serve', ['default', 'browser-sync'], function() {
-  gulp.watch(['./src/**/*.{import.styl,styl,css}', './bundle.config.js'], ['css-watch']);
-  gulp.watch(['./src/**/*.{js,tmpl}', './bundles/**/*.{js,tmpl}', './bundle.config.js'], ['js-watch']);
-  gulp.watch('./samples/**/*.html').on('change', function() {
-    browserSync.reload('*.html');
-  });
-});
-
-gulp.task('build', ['bundle-js', 'bundle-css']);
-
-gulp.task('clean', function() {
-  return del(['dist/**']);
-});
-
-gulp.task('default', ['build']);
+var serveDirs = [ './examples', './dist' ];
 
 gulp.task('browser-sync', function() {
-  browserSync.init({
-    server: {
-      baseDir: ['./samples', './dist'],
-      directory: true
-    }
-  });
+    browserSync.init({
+        server: {
+            baseDir: serveDirs,
+            directory: true
+        }
+    });
 });
+
+gulp.task('serve', [ 'browser-sync' ], function() {
+    gulp.watch(['./src/**/*.js', './src/**/*.styl'], ['build']);
+    gulp.watch('./dist/**/*.js').on('change', () => browserSync.reload('*.js'));
+    gulp.watch('./dist/**/*.css').on('change', () => browserSync.reload('*.css'));
+    gulp.watch('./examples/*.html').on('change', () => browserSync.reload('*.html'));
+});
+
+gulp.task('default', [ 'serve' ]);
