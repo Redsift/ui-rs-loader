@@ -1,5 +1,3 @@
-'use strict'
-
 import RedsiftLoader from './loader.js';
 
 class RedsiftLoaderWebComponent extends HTMLElement {
