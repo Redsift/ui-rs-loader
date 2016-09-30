@@ -33,4 +33,4 @@ gulp.task('serve', [ 'browser-sync' ], function() {
     gulp.watch('./examples/*.html').on('change', () => browserSync.reload('*.html'));
 });
 
-gulp.task('default', [ 'serve' ]);
+gulp.task('default', [ 'build', 'serve' ]);
