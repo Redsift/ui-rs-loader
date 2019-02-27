@@ -5,6 +5,10 @@ class RedsiftLoaderWebComponent extends HTMLElement {
     super();
   }
 
+  static get observedAttributes() {
+    return ['animate'];
+  }
+
   //----------------------------------------------------------------------------
   // Lifecycle:
   //----------------------------------------------------------------------------
@@ -15,9 +19,6 @@ class RedsiftLoaderWebComponent extends HTMLElement {
     });
   }
 
-  static get observedAttributes() {
-    return ['animate'];
-  }
 
   attributeChangedCallback(attributeName, oldValue, newValue) {
     if (attributeName !== 'animate' || !this.rsLoader) return;

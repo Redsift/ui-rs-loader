@@ -1,56 +1,77 @@
+import fs from 'fs';
+
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import babel from 'rollup-plugin-babel';
-import postcss from 'rollup-plugin-postcss'
+import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
 
 import html from 'rollup-plugin-html';
 
 import pkg from './package.json';
 
-const plugins = [
-  babel({
-    exclude: ['node_modules/**']
-  }),
-  html({
-    include: '**/*.tmpl'
-  }),
-  postcss({
-    extract: './dist/css/ui-rs-loader.css',
-    minimize: true,
-  }),
-]
+const isWatching = Boolean(process.env.ROLLUP_WATCH);
+const isProduction = Boolean(process.env.NODE_ENV === 'production');
+const isDevelopment = !isProduction;
 
-export default [
-	// browser-friendly UMD build
-	{
-		input: 'src/index.js',
-		output: {
-			name: 'ui-rs-loader',
-			file: pkg.browser,
-			format: 'umd'
-		},
-		plugins: [
-			resolve(), // so Rollup can find `ms`
-			commonjs(), // so Rollup can convert `ms` to an ES module
-			...plugins,
-		]
-	},
+const baseConfig = {
+  input: 'src/index.js',
+}
 
-	// CommonJS (for Node) and ES module (for bundlers) build.
-	// (We could have three entries in the configuration array
-	// instead of two, but it's quicker to generate multiple
-	// builds from a single configuration where possible, using
-	// an array for the `output` option, where we can specify 
-	// `file` and `format` for each target)
-	{
-		input: 'src/index.js',
-		external: ['ms'],
-		output: [
-			{ file: pkg.main, format: 'cjs' },
-			{ file: pkg.module, format: 'es' }
-		],
-		plugins: [
-			...plugins,
-		]
-	}
-];
+
+const getPlugins = async () => {
+  return [
+    babel({
+      exclude: ['node_modules/**']
+    }),
+    html({
+      include: '**/*.tmpl'
+    }),
+    postcss({
+      extract: './dist/css/ui-rs-loader.min.css',
+      minimize: true,
+    }),
+    terser({
+      sourcemap: isDevelopment,
+    }),
+  ];
+}
+
+
+export default (async () => ([
+  // browser-friendly UMD build
+  {
+    output: {
+      name: 'ui-rs-loader',
+      file: pkg.browser,
+      format: 'umd',
+      sourcemap: isDevelopment,
+    },
+    plugins: [
+      resolve(),
+      commonjs(),
+      isWatching && (await import('rollup-plugin-serve'))({
+        host: 'localhost',
+        port: 3231,
+        contentBase: ['dist', 'examples'],
+        historyApiFallback: true,
+        historyApiFallback: '/loader.html',
+      }),
+      ...await getPlugins(),
+    ]
+  },
+
+  // CommonJS (for Node) and ES module (for bundlers) build.
+  {
+    output: [
+      { file: pkg.main, format: 'cjs' },
+      { file: pkg.module, format: 'es' }
+    ],
+    plugins: [
+      ...await getPlugins(),
+    ]
+  }
+].map(config => ({
+  ...baseConfig,
+  ...config,
+}))));
