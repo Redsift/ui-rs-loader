@@ -28,7 +28,6 @@ const getPlugins = async () => {
       include: '**/*.tmpl'
     }),
     postcss({
-      extract: './dist/css/ui-rs-loader.min.css',
       minimize: true,
     }),
     terser({

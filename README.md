@@ -24,13 +24,7 @@ This will create a `./dist` folder with the Javascript and CSS files.
 
 ## Browser Usage
 
-First include the CSS file in the `<head>` of your page:
-
-```html
-<link rel="stylesheet" href="//static.redsift.io/reusable/ui-rs-loader/latest/css/ui-rs-loader.min.css">
-```
-
-Then include the Javascript at the bottom of the `<body>`:
+Include the Javascript at the bottom of the `<body>`:
 
 ```html
 <script src="//static.redsift.io/reusable/ui-rs-loader/latest/js/ui-rs-loader.umd-es2015.min.js"></script>
@@ -52,6 +46,12 @@ The `animate` attribute starts and stops the animation, but probably you will hi
 rs-loader > .loader-opts {
   width: 100px;
 }
+```
+
+CSS file to include in the `<head>` of your page: (for legacy purposes, the script injects the CSS)
+
+```html
+<link rel="stylesheet" href="//static.redsift.io/reusable/ui-rs-loader/latest/css/ui-rs-loader.min.css">
 ```
 
 # Development Setup
