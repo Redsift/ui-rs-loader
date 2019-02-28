@@ -22,7 +22,7 @@ test:
 
 deployment:
   production:
-    branch: master
+    branch: /release-.*/
     commands:
       - sudo pip install awscli
       - echo "Publishing to NPM"
