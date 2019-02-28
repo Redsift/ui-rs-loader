@@ -1,19 +1,27 @@
 import RedsiftLoader from './loader.js';
 
 class RedsiftLoaderWebComponent extends HTMLElement {
+  constructor() {
+    super();
+  }
+
+  static get observedAttributes() {
+    return ['animate'];
+  }
 
   //----------------------------------------------------------------------------
   // Lifecycle:
   //----------------------------------------------------------------------------
 
-  createdCallback() {
+  connectedCallback() {
     this.rsLoader = new RedsiftLoader(this,{
       hasAnimate: this.hasAnimate
     });
   }
 
+
   attributeChangedCallback(attributeName, oldValue, newValue) {
-    if (attributeName !== 'animate') return;
+    if (attributeName !== 'animate' || !this.rsLoader) return;
 
     if (this.hasAnimate) {
       this.rsLoader.start();
@@ -30,7 +38,7 @@ class RedsiftLoaderWebComponent extends HTMLElement {
 
 export default () => {
   try {
-    document.registerElement('rs-loader', RedsiftLoaderWebComponent);
+    customElements.define('rs-loader', RedsiftLoaderWebComponent);
   } catch (e) {
     console.log('[redsift-ui] Element already exists: ', e);
   }
