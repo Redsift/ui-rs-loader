@@ -1,6 +1,6 @@
 {
   "name": "@redsift/ui-rs-loader",
-  "version": "0.2.2",
+  "version": "0.3.2",
   "description": "The Red Sift loader as a web component",
   "keywords": [
     "redsift-ui-component",
