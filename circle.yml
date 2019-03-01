@@ -26,7 +26,7 @@ deployment:
     commands:
       - sudo pip install awscli
       - echo "Publishing to NPM"
-      - echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
+      - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
       - npm publish --access=public
       - echo "Uploading to S3 bucket..."
       - aws s3 cp ${CIRCLE_ARTIFACTS}/dist s3://$S3_BUCKET/reusable/$NAME/latest --recursive --acl public-read
